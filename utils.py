@@ -1,5 +1,4 @@
 import os 
-import numpy as np
 
 # PROBLEM 1
 def readDataFromFile(fileName: str) -> dict:
