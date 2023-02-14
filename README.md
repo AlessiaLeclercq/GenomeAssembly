@@ -10,4 +10,4 @@ The tasks consists in the following:
   - Recursively find the correct order of the reads. Starting from the read identified in the previous point, search for the largest ovelapping read among the available ones and keep on going until a read that has no significant ovelaps (when positioned to the left) is found. 
   - Reconstruct the genomic sequence given the order of the reads, the overlapping sequences and the reads.
   
-The code has been divided into [functions]() implementing the steps and a [main]() simulating the result. 
+The code has been divided into [functions](https://github.com/AlessiaLeclercq/GenomeAssembly/blob/main/utils.py) implementing the steps and a [main](https://github.com/AlessiaLeclercq/GenomeAssembly/blob/main/main.py) simulating the result. 
