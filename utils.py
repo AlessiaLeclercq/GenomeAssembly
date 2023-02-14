@@ -29,7 +29,7 @@ def getOverlap(left:str, right:str) -> str:
     '''Computes the overlap between two sequences'''
     max_overlap = min(len(left), len(right))
     for cut_index in range(max_overlap, 0, -1):
-        #get the laft and right cuts
+        #get the left and right cuts
         left_cut = left[-cut_index:]
         right_cut = right[:cut_index]
         #compare to check if they overlap 
@@ -57,7 +57,7 @@ def getAllOverlaps(reads:dict) -> dict:
             #using the string as left search
             left_search = len(getOverlap(reads[read1], reads[read2]))
             overlaps_dict[read1][read2] = left_search
-            #perfrom the opposite
+            #perfom the opposite
             right_search = len(getOverlap(reads[read2], reads[read1]))
             overlaps_dict[read2][read1] = right_search
 
@@ -86,31 +86,31 @@ def prettyPrint(overlaps: dict) -> None:
 
 
 # PROBLEM 6
-def is_significant_left(overlaps: dict, sequence_name:str)-> bool:
+def is_significant_left(overlaps: dict, sequence_name:str)-> int:
     '''Finds the number of significant overlaps (>2) when positioned to the left'''
     return sum([1 for match, ovrlp in overlaps[sequence_name].items() if ovrlp>2])
 
     
-def is_significant_right(overlaps: dict, sequence_name: str)-> bool:
+def is_significant_right(overlaps: dict, sequence_name: str)-> int:
     '''Finds whether a sequence has a significant overlap (>2) when positioned to the right'''
-    significant = False
+    significant = 0
     for match in overlaps.keys():
         if match != sequence_name:
             if overlaps[match][sequence_name] > 2:
-                significant = True
-    return significant 
+                significant += 1
+    return significant
 
 def findFirstRead(overlaps: dict) -> str:
     '''Finds the first (leftmost) read, hence the one that only has a significant (>2) overlap to its right end, i.e., 
     it only has a good overlaps when positioned to the left of other reads'''
     for sequence_name in overlaps.keys():
-        if is_significant_left(overlaps, sequence_name)==1 and not is_significant_right(overlaps, sequence_name):
+        if is_significant_left(overlaps, sequence_name)==1 and is_significant_right(overlaps, sequence_name)== 0:
             return sequence_name
     return None 
 
 
 # PROBLEM 7
-def findKey(d:dict) -> str:
+def findKeyForLargestValue(d:dict) -> str:
     '''Finds the read that has the largest overlap to the right end of the current read'''
     return max(list(d.items()), key = lambda item: item[1])[0]
 
@@ -126,7 +126,7 @@ def findOrder(name: str, overlaps: dict) -> list:
 def recursiveOrder(current_read: str, overlaps: dict, readOrder: list) -> list:
     '''Recursive construction of the list of read names representing the genomic sequence'''
     #find the next read (overlapping) and add it to the sequence
-    next_read = findKey(overlaps[current_read])
+    next_read = findKeyForLargestValue(overlaps[current_read])
     readOrder.append(next_read)
     #check if next_read has significant overlapping and srecursive call
     if is_significant_left(overlaps, next_read):
